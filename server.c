@@ -6,7 +6,7 @@
 /*   By: lkhye-ya <lkhye-ya@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 18:51:30 by lkhye-ya          #+#    #+#             */
-/*   Updated: 2024/10/15 19:18:14 by lkhye-ya         ###   ########.fr       */
+/*   Updated: 2024/10/21 16:37:39 by lkhye-ya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void handle_signal(int sig)
 {
 	static int	index;
+	static char	c;
 
 	index = 0;
 
@@ -23,10 +24,10 @@ void handle_signal(int sig)
 	else if (sig == SIGUSR2)
 		c << 1;
 	index++;
-	index = 0;
+	c = 0;
 }
 
-int main()
+int main(void)
 {
 	pid_t	pid;
 	pid = getpid();
@@ -36,5 +37,7 @@ int main()
 	signal(SIGUSR1, handle_signal);
 	signal(SIGUSR2, handle_signal);
 	
+	while (1)
+		pause();
 	return (0);
 }
