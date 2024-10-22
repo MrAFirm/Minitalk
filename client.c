@@ -6,7 +6,7 @@
 /*   By: lkhye-ya <lkhye-ya@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 13:47:14 by lkhye-ya          #+#    #+#             */
-/*   Updated: 2024/10/21 20:57:41 by lkhye-ya         ###   ########.fr       */
+/*   Updated: 2024/10/22 17:55:48 by lkhye-ya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void signal_action(int pid, char *str)
 		c = *(str);
 		while (index < 8)
 		{
-			if (c = (7 - index))
+			if (c << index & 0b10000000)
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
@@ -35,7 +35,7 @@ void signal_action(int pid, char *str)
 	}
 }
 
-int main(int argc, int **argv)
+int main(int argc, char **argv)
 {
 	int		server_pid;
 	char	*message;
@@ -51,8 +51,9 @@ int main(int argc, int **argv)
 
 	while (*message)
 	{
-		signal_action(server_pid, *message);
+		signal_action(server_pid, message);
 		signal_action(server_pid, "\0");
+		break;
 	}
 
 	return (0);
