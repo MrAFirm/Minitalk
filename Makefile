@@ -1,23 +1,23 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: lkhye-ya <lkhye-ya@student.42kl.edu.my>    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/10/15 17:40:56 by lkhye-ya          #+#    #+#              #
-#    Updated: 2024/10/15 18:44:02 by lkhye-ya         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+# # **************************************************************************** #
+# #                                                                              #
+# #                                                         :::      ::::::::    #
+# #    Makefile                                           :+:      :+:    :+:    #
+# #                                                     +:+ +:+         +:+      #
+# #    By: lkhye-ya <lkhye-ya@student.42kl.edu.my>    +#+  +:+       +#+         #
+# #                                                 +#+#+#+#+#+   +#+            #
+# #    Created: 2024/10/15 17:40:56 by lkhye-ya          #+#    #+#              #
+# #    Updated: 2024/10/22 17:09:20 by lkhye-ya         ###   ########.fr        #
+# #                                                                              #
+# # **************************************************************************** #
 
-FT_PRINTF = ft_printf/ft_printf.a
 UTILS = utils/libft.a
-
-SERVER = server
-CLIENT = client
+FT_PRINTF = utils/ft_printf/libftprintf.a
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+
+SERVER = server
+CLIENT = client
 
 SRC_SERVER = server.c
 SRC_CLIENT = client.c
@@ -27,24 +27,26 @@ OBJ_CLIENT = $(SRC_CLIENT: .c = .o)
 
 all: $(SERVER) $(CLIENT)
 
-$(SERVER) $(CLIENT): $(OBJ_SERVER) $(OBJ_CLIENT) $(FT_PRINTF) $(UTILS)
-				$(CC) $(CFLAGS) $(OBJ_SERVER) $(FT_PRINTF) $(UTILS) -o $(SERVER)
-				$(CC) $(CFLAGS) $(OBJ_CLIENT) $(FT_PRINTF) $(UTILS) -o $(CLIENT)
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(SERVER) $(CLIENT): $(OBJ_SERVER) $(OBJ_CLIENT) $(UTILS) $(FT_PRINTF)
+				$(CC) $(CFLAGS) $(OBJ_SERVER) $(UTILS) $(FT_PRINTF) -o $(SERVER)
+				$(CC) $(CFLAGS) $(OBJ_CLIENT) $(UTILS) $(FT_PRINTF) -o $(CLIENT)
 
 $(FT_PRINTF):
-	$(MAKE) -C ft_printf
+	$(MAKE) -C utils/ft_printf
 
 $(UTILS):
 	$(MAKE) -C utils
 
-clean:
-	rm -rf $(OBJ_SERVER) $(OBJ_CLIENT)
+clean:	
+		$(MAKE) clean -C utils 
+		$(MAKE) clean -C utils/ft_printf
+		rm -rf $(OBJS_SERVER) $(OBJS_CLIENT)
 
-fclean: clean
-	rm -rf $(SERVER) $(CLIENT)
+fclean:	clean
+		$(MAKE) fclean -C utils 
+		$(MAKE) fclean -C utils/ft_printf
+		rm -rf $(SERVER) $(CLIENT) $(UTILS) $(FT_PRINTF)
+
 
 re: fclean all
 
